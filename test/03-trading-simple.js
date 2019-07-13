@@ -59,6 +59,7 @@ contract('Simple Order Tests', function (accounts) {
             return myExchangeInstance.getBuyOrderBook.call("FIXED");
         }).then(function (orderBook) {
             orderBookLengthBeforeBuy = orderBook[0].length;
+           
             return myExchangeInstance.buyToken("FIXED", web3.utils.toWei(new web3.utils.BN(2), "finney"), 5); //we add one offer on top of another one, doesn't increase the orderBook
         }).then(function(txResult) {
             assert.equal(txResult.logs[0].event, "LimitBuyOrderCreated", "The Log-Event should be LimitBuyOrderCreated");
@@ -67,8 +68,11 @@ contract('Simple Order Tests', function (accounts) {
             assert.equal(txResult.logs[0].event, "LimitBuyOrderCreated", "The Log-Event should be LimitBuyOrderCreated");
             return myExchangeInstance.getBuyOrderBook.call("FIXED");
         }).then(function(orderBook) {
-            assert.equal(orderBook[0].length, orderBookLengthBeforeBuy+2, "OrderBook should have one more buy offers");
-            assert.equal(orderBook[1].length, orderBookLengthBeforeBuy+2, "OrderBook should have 2 buy volume elements");
+             
+           
+
+            assert.equal(orderBook[0].length, orderBookLengthBeforeBuy+1, "OrderBook should have one more buy offers");
+            assert.equal(orderBook[1].length, orderBookLengthBeforeBuy+1, "OrderBook should have 2 buy volume elements");
         });
     });
 
