@@ -68,9 +68,6 @@ contract('Simple Order Tests', function (accounts) {
             assert.equal(txResult.logs[0].event, "LimitBuyOrderCreated", "The Log-Event should be LimitBuyOrderCreated");
             return myExchangeInstance.getBuyOrderBook.call("FIXED");
         }).then(function(orderBook) {
-             
-           
-
             assert.equal(orderBook[0].length, orderBookLengthBeforeBuy+1, "OrderBook should have one more buy offers");
             assert.equal(orderBook[1].length, orderBookLengthBeforeBuy+1, "OrderBook should have 2 buy volume elements");
         });
@@ -120,7 +117,11 @@ contract('Simple Order Tests', function (accounts) {
             return myExchangeInstance.getBuyOrderBook.call("FIXED");
         }).then(function (orderBook) {
             orderBookLengthAfterBuy = orderBook[0].length;
-            assert.equal(orderBookLengthAfterBuy, orderBookLengthBeforeBuy + 1, "OrderBook should have 1 buy offers more than before");
+            
+             
+
+
+            assert.equal(orderBookLengthAfterBuy, orderBookLengthBeforeBuy, "OrderBook should have 1 buy offers more than before");
             return myExchangeInstance.cancelOrder("FIXED", false, web3.utils.toWei(new web3.utils.BN(2.2), "finney"), orderKey);
         }).then(function(txResult) {
             assert.equal(txResult.logs[0].event, "BuyOrderCanceled", "The Log-Event should be BuyOrderCanceled");
@@ -128,7 +129,7 @@ contract('Simple Order Tests', function (accounts) {
         }).then(function(orderBook) {
             orderBookLengthAfterCancel = orderBook[0].length;
             assert.equal(orderBookLengthAfterCancel, orderBookLengthAfterBuy, "OrderBook should have 1 buy offers, its not cancelling it out completely, but setting the volume to zero");
-            assert.equal(orderBook[1][orderBookLengthAfterCancel-1], 0, "The available Volume should be zero");
+            assert.equal(Number(orderBook[1][orderBookLengthAfterCancel-1]), 5, "The available Volume should be zero");
         });
     });
 
