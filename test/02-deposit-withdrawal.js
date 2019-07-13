@@ -71,14 +71,10 @@ contract('Exchange Basic Tests', function (accounts) {
             balanceAfterDeposit =await web3.eth.getBalance(accounts[0]);
             return myExchangeInstance.getEthBalanceInWei.call();
         }).then(function (balanceInWei) {
-            console.log('///////////////////////////////////////////////////////////////////////////')
-          console.log( balanceBeforeTransaction , balanceAfterDeposit )
-            console.log('///////////////////////////////////////////////////////////////////////////')
+            
             assert.equal(Number(balanceInWei), web3.utils.toWei(new web3.utils.BN(1), "ether"), "There is one ether available");
             assert.isAtLeast((balanceBeforeTransaction - balanceAfterDeposit),Number( web3.utils.toWei(new web3.utils.BN(1), "ether")),  "Balances of account are the same");
-            console.log('///////////////////////////////////////////////////////////////////////////')
-            console.log( balanceBeforeTransaction , balanceAfterDeposit )
-              console.log('///////////////////////////////////////////////////////////////////////////')
+            
             return myExchangeInstance.withdrawEther(web3.utils.toWei(new web3.utils.BN(1), "ether"));
         }).then(async (txHash) =>{
             balanceAfterWithdrawal =await web3.eth.getBalance(accounts[0]);
